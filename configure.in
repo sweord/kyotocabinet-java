@@ -197,10 +197,10 @@ fi
 if test "$enable_opt" != "no"
 then
   printf 'checking for CPU optimization availability... '
-  if printf 'main() {}' | $CC -xc -march=native -o config.tmp - >config.tmp 2>&1
+  if printf 'main() {}' | $CC -xc -o config.tmp - >config.tmp 2>&1
   then
-    MYCFLAGS="-march=native $MYCFLAGS"
-    MYCXXFLAGS="-march=native $MYCXXFLAGS"
+    MYCFLAGS="$MYCFLAGS"
+    MYCXXFLAGS="$MYCXXFLAGS"
     printf 'yes\n'
   else
     printf 'no\n'

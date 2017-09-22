@@ -3321,10 +3321,10 @@ fi
 if test "$enable_opt" != "no"
 then
   printf 'checking for CPU optimization availability... '
-  if printf 'main() {}' | $CC -xc -march=native -o config.tmp - >config.tmp 2>&1
+  if printf 'main() {}' | $CC -xc -o config.tmp - >config.tmp 2>&1
   then
-    MYCFLAGS="-march=native $MYCFLAGS"
-    MYCXXFLAGS="-march=native $MYCXXFLAGS"
+    MYCFLAGS="$MYCFLAGS"
+    MYCXXFLAGS="$MYCXXFLAGS"
     printf 'yes\n'
   else
     printf 'no\n'
@@ -4064,12 +4064,12 @@ else
 fi
 
 
-ac_fn_cxx_check_header_mongrel "$LINENO" "jni.h" "ac_cv_header_jni_h" "$ac_includes_default"
-if test "x$ac_cv_header_jni_h" = xyes; then :
-  true
-else
-  as_fn_error $? "jni.h is required" "$LINENO" 5
-fi
+#ac_fn_cxx_check_header_mongrel "$LINENO" "jni.h" "ac_cv_header_jni_h" "$ac_includes_default"
+#if test "x$ac_cv_header_jni_h" = xyes; then :
+#  true
+#else
+#  as_fn_error $? "jni.h is required" "$LINENO" 5
+#fi
 
 
 

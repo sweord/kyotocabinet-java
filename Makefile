@@ -8,46 +8,46 @@
 
 
 # Generic settings
-SHELL = @SHELL@
+SHELL = /bin/bash
 
 # Package information
-PACKAGE = @PACKAGE_NAME@
-VERSION = @PACKAGE_VERSION@
+PACKAGE = kyotocabinet-java
+VERSION = 1.24
 PACKAGEDIR = $(PACKAGE)-$(VERSION)
 PACKAGETGZ = $(PACKAGE)-$(VERSION).tar.gz
-LIBVER = @MYLIBVER@
-LIBREV = @MYLIBREV@
+LIBVER = 1
+LIBREV = 1
 
 # Targets
-JARFILES = @MYJARFILES@
-JAVAFILES = @MYJAVAFILES@
+JARFILES = kyotocabinet.jar
+JAVAFILES = Loader.java Utility.java Error.java Visitor.java FileProcessor.java Cursor.java DB.java MapReduce.java ValueIterator.java Test.java
 LIBRARYFILES = libjkyotocabinet.so
-LIBOBJFILES = @MYLIBOBJFILES@
+LIBOBJFILES = kyotocabinet.o
 
 # Install destinations
-prefix = @prefix@
-exec_prefix = @exec_prefix@
-datarootdir = @datarootdir@
-LIBDIR = @libdir@
+prefix = /usr/local
+exec_prefix = ${prefix}
+datarootdir = ${prefix}/share
+LIBDIR = ${exec_prefix}/lib
 DESTDIR =
 
 # Building configuration
-JAVAC = @JAVAC@
-JAVACFLAGS = @MYJAVACFLAGS@
-JAR = @JAR@
-JAVAH = @JAVAH@
-JAVADOC = @JAVADOC@
-JAVADOCFLAGS = @MYJAVADOCFLAGS@
-JAVARUN = @JAVARUN@
-JAVARUNFLAGS = @MYJAVARUNFLAGS@
-CXX = @CXX@
-CPPFLAGS = @MYCPPFLAGS@ \
+JAVAC = /bin/javac
+JAVACFLAGS = -d .
+JAR = /bin/jar
+JAVAH = /bin/javah
+JAVADOC = /bin/javadoc
+JAVADOCFLAGS = -locale en -tag note:a:Note: -nodeprecated -nohelp -quiet -noqualifier all
+JAVARUN = /bin/java
+JAVARUNFLAGS = -cp kyotocabinet.jar -Djava.library.path=.:/root/lib:/usr/local/lib::/usr/local/lib
+CXX = clang++
+CPPFLAGS = -I. -I$(INCLUDEDIR) -I/root/include -I/usr/local/include -DNDEBUG -I/include -I/include/ -I/Headers -I/Headers/ -I/usr/local/include \
 	-I/usr/lib/jvm/java-8-openjdk-amd64/include -I/usr/lib/jvm/java-8-openjdk-amd64/include/linux
-CXXFLAGS = @MYCXXFLAGS@ -target x86_64-pc-linux-gnu 
-LDFLAGS = @MYLDFLAGS@ -L../kyotocabinet-github
-LIBS = @LIBS@ -m64 -lkyotocabinet 
-LDENV = LD_RUN_PATH=/lib:/usr/lib:$(LIBDIR):$(HOME)/lib:/usr/local/lib:@MYRUNPATH@:.
-RUNENV = @MYLDLIBPATHENV@=.:/lib:/usr/lib:$(LIBDIR):$(HOME)/lib:/usr/local/lib:@MYRUNPATH@
+CXXFLAGS = -m64 -Wall -fPIC -fsigned-char -O2 -target x86_64-pc-linux-gnu 
+LDFLAGS = -L. -L$(LIBDIR) -L/root/lib -L/usr/local/lib -L/usr/local/lib -L../kyotocabinet-github
+LIBS = -lz -lstdc++ -lrt -lpthread -lm -lc  -m64 -lkyotocabinet 
+LDENV = LD_RUN_PATH=/lib:/usr/lib:$(LIBDIR):$(HOME)/lib:/usr/local/lib:$(LIBDIR):/usr/local/lib:.
+RUNENV = LD_LIBRARY_PATH=.:/lib:/usr/lib:$(LIBDIR):$(HOME)/lib:/usr/local/lib:$(LIBDIR):/usr/local/lib
 
 
 
