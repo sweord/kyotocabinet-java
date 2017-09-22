@@ -8,9 +8,9 @@
 
 
 # VC++ directory
-VCPATH = C:\Program Files\Microsoft Visual Studio 10.0\VC
+VCPATH = D:\Program Files\Microsoft Visual Studio 10.0\VC
 SDKPATH = C:\Program Files\Microsoft SDKs\Windows\v7.0A
-JDKPATH = C:\Program Files\Java\jdk1.6.0_22
+JDKPATH = C:\Program Files\Java\jdk1.8.0_05
 KCPATH = kcwin32
 
 # Targets
@@ -32,11 +32,15 @@ LINK = link
 CLFLAGS = /nologo \
   /I "$(VCPATH)\Include" /I "$(VCPATH)\PlatformSDK\Include" /I "$(SDKPATH)\Include" \
   /I "$(KCPATH)\include" /I "$(JDKPATH)\include" /I "$(JDKPATH)\include\win32" /I "." \
+  /I "../kyotocabinet-github" \
   /DNDEBUG /D_CRT_SECURE_NO_WARNINGS \
   /O2 /EHsc /W3 /wd4244 /wd4351 /wd4800 /wd4101 /MT
 LINKFLAGS = /nologo \
   /libpath:"$(VCPATH)\lib" /libpath:"$(VCPATH)\PlatformSDK\Lib" /libpath:"$(SDKPATH)\Lib" \
-  /libpath:"$(KCPATH)\lib" /libpath:"$(JDKPATH)\lib" /libpath:"."
+  /libpath:"$(KCPATH)\lib" /libpath:"$(JDKPATH)\lib" /libpath:"." \
+  /libpath:"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\amd64" \
+  /libpath:"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\x64" \
+  /libpath:"../kyotocabinet-github"
 
 
 
@@ -139,7 +143,7 @@ kyotocabinet.jar : $(JAVAFILES)
 
 
 jkyotocabinet.dll : $(LIBOBJFILES)
-	$(LINK) $(LINKFLAGS) /DLL /OUT:$@ $(LIBOBJFILES) kcwin32\lib\kyotocabinet.lib
+	$(LINK) $(LINKFLAGS) /DLL /OUT:$@ $(LIBOBJFILES) kyotocabinet.lib
 
 
 kyotocabinet.obj : kyotocabinet_Utility.h kyotocabinet_Error.h \
