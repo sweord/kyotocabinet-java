@@ -1,7 +1,7 @@
 win64
 1. open vs2010 win64 console
 2. cd current directory
-3. namek -f VCmakefile
+3. nmake -f VCmakefile
 
 ubuntu64
 1. ./configure
