@@ -1222,6 +1222,9 @@ JNIEXPORT jthrowable JNICALL Java_kyotocabinet_DB_error
     jclass cls_err = env->FindClass(P_ERR);
     jmethodID id_err_init = env->GetMethodID(cls_err, "<init>", "(I" L_STR ")V");
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return NULL;
+    }
     kc::PolyDB::Error err = db->error();
     jstring jmessage = newstring(env, err.message());
     jobject jerr = env->NewObject(cls_err, id_err_init, err.code(), jmessage);
@@ -1244,6 +1247,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_open
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftString path(env, jpath);
     bool rv = db->open(path.str(), mode);
     if (rv) return true;
@@ -1262,6 +1268,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_close
 (JNIEnv* env, jobject jself) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     g_curbur.sweap();
     bool rv = db->close();
     if (rv) return true;
@@ -1284,6 +1293,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_accept
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftArray key(env, jkey);
     SoftVisitor visitor(env, jvisitor, writable);
     bool rv = db->accept(key.ptr(), key.size(), &visitor, writable);
@@ -1312,6 +1324,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_accept_1bulk
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     size_t knum = env->GetArrayLength(jkeys);
     StringVector keys;
     keys.reserve(knum);
@@ -1350,6 +1365,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_iterate
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftVisitor visitor(env, jvisitor, writable);
     bool rv = db->iterate(&visitor, writable);
     jthrowable jex = visitor.exception();
@@ -1377,6 +1395,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_set
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftArray key(env, jkey);
     SoftArray value(env, jvalue);
     bool rv = db->set(key.ptr(), key.size(), value.ptr(), value.size());
@@ -1400,6 +1421,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_add
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftArray key(env, jkey);
     SoftArray value(env, jvalue);
     bool rv = db->add(key.ptr(), key.size(), value.ptr(), value.size());
@@ -1423,6 +1447,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_replace
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftArray key(env, jkey);
     SoftArray value(env, jvalue);
     bool rv = db->replace(key.ptr(), key.size(), value.ptr(), value.size());
@@ -1446,6 +1473,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_append
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftArray key(env, jkey);
     SoftArray value(env, jvalue);
     bool rv = db->append(key.ptr(), key.size(), value.ptr(), value.size());
@@ -1469,6 +1499,9 @@ JNIEXPORT jlong JNICALL Java_kyotocabinet_DB_increment
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return 0;
+    }
     SoftArray key(env, jkey);
     num = db->increment(key.ptr(), key.size(), num, orig);
     if (num == kc::INT64MIN) throwdberror(env, jself);
@@ -1490,6 +1523,9 @@ JNIEXPORT jdouble JNICALL Java_kyotocabinet_DB_increment_1double
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftArray key(env, jkey);
     num = db->increment_double(key.ptr(), key.size(), num, orig);
     if (kc::chknan(num)) throwdberror(env, jself);
@@ -1511,6 +1547,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_cas
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftArray key(env, jkey);
     SoftArray oval(env, joval);
     SoftArray nval(env, jnval);
@@ -1535,6 +1574,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_remove
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftArray key(env, jkey);
     bool rv = db->remove(key.ptr(), key.size());
     if (rv) return true;
@@ -1557,6 +1599,9 @@ JNIEXPORT jbyteArray JNICALL Java_kyotocabinet_DB_get
       return NULL;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return NULL;
+    }
     SoftArray key(env, jkey);
     size_t vsiz;
     char* vbuf = db->get(key.ptr(), key.size(), &vsiz);
@@ -1584,6 +1629,9 @@ JNIEXPORT jint JNICALL Java_kyotocabinet_DB_check
       return -1;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return -1;
+    }
     SoftArray key(env, jkey);
     int32_t vsiz = db->check(key.ptr(), key.size());
     if (vsiz < 0) {
@@ -1608,6 +1656,9 @@ JNIEXPORT jbyteArray JNICALL Java_kyotocabinet_DB_seize
       return NULL;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return NULL;
+    }
     SoftArray key(env, jkey);
     size_t vsiz;
     char* vbuf = db->seize(key.ptr(), key.size(), &vsiz);
@@ -1635,6 +1686,9 @@ JNIEXPORT jlong JNICALL Java_kyotocabinet_DB_set_1bulk
       return -1;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return -1;
+    }
     size_t rnum = env->GetArrayLength(jrecs);
     StringMap recs;
     for (size_t i = 0; i + 1 < rnum; i += 2) {
@@ -1671,6 +1725,9 @@ JNIEXPORT jlong JNICALL Java_kyotocabinet_DB_remove_1bulk
       return -1;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return -1;
+    }
     size_t knum = env->GetArrayLength(jkeys);
     StringVector keys;
     keys.reserve(knum);
@@ -1705,6 +1762,9 @@ JNIEXPORT jobjectArray JNICALL Java_kyotocabinet_DB_get_1bulk
       return NULL;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return NULL;
+    }
     size_t knum = env->GetArrayLength(jkeys);
     StringVector keys;
     keys.reserve(knum);
@@ -1750,6 +1810,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_clear
 (JNIEnv* env, jobject jself) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     bool rv = db->clear();
     if (rv) return true;
     throwdberror(env, jself);
@@ -1767,6 +1830,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_synchronize
 (JNIEnv* env, jobject jself, jboolean hard, jobject jproc) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     if (!jproc) return db->synchronize(hard);
     SoftFileProcessor proc(env, jproc);
     bool rv = db->synchronize(hard, &proc);
@@ -1791,6 +1857,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_occupy
 (JNIEnv* env, jobject jself, jboolean writable, jobject jproc) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     if (!jproc) return db->occupy(writable);
     SoftFileProcessor proc(env, jproc);
     bool rv = db->occupy(writable, &proc);
@@ -1819,6 +1888,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_copy
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftString dest(env, jdest);
     bool rv = db->copy(dest.str());
     if (rv) return true;
@@ -1837,6 +1909,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_begin_1transaction
 (JNIEnv* env, jobject jself, jboolean hard) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     bool rv = db->begin_transaction(hard);
     if (rv) return true;
     throwdberror(env, jself);
@@ -1854,6 +1929,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_end_1transaction
 (JNIEnv* env, jobject jself, jboolean commit) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     bool rv = db->end_transaction(commit);
     if (rv) return true;
     throwdberror(env, jself);
@@ -1875,6 +1953,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_dump_1snapshot
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftString dest(env, jdest);
     bool rv = db->dump_snapshot(dest.str());
     if (rv) return true;
@@ -1897,6 +1978,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_load_1snapshot
       return false;
     }
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     SoftString src(env, jsrc);
     bool rv = db->load_snapshot(src.str());
     if (rv) return true;
@@ -1915,6 +1999,9 @@ JNIEXPORT jlong JNICALL Java_kyotocabinet_DB_count
 (JNIEnv* env, jobject jself) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return 0;
+    }
     int64_t count = db->count();
     if (count < 0) throwdberror(env, jself);
     return count;
@@ -1931,6 +2018,9 @@ JNIEXPORT jlong JNICALL Java_kyotocabinet_DB_size
 (JNIEnv* env, jobject jself) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return 0;
+    }
     int64_t size = db->size();
     if (size < 0) throwdberror(env, jself);
     return size;
@@ -1947,6 +2037,9 @@ JNIEXPORT jstring JNICALL Java_kyotocabinet_DB_path
 (JNIEnv* env, jobject jself) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return NULL;
+    }
     std::string path = db->path().c_str();
     if (path.empty()) {
       throwdberror(env, jself);
@@ -1966,6 +2059,9 @@ JNIEXPORT jobject JNICALL Java_kyotocabinet_DB_status
 (JNIEnv* env, jobject jself) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return NULL;
+    }
     StringMap status;
     if (!db->status(&status)) {
       throwdberror(env, jself);
@@ -1985,6 +2081,9 @@ JNIEXPORT jobject JNICALL Java_kyotocabinet_DB_match_1prefix
 (JNIEnv* env, jobject jself, jstring jprefix, jlong max) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return NULL;
+    }
     SoftString prefix(env, jprefix);
     StringVector keys;
     if (db->match_prefix(prefix.str(), &keys, max) == -1) {
@@ -2005,6 +2104,9 @@ JNIEXPORT jobject JNICALL Java_kyotocabinet_DB_match_1regex
 (JNIEnv* env, jobject jself, jstring jregex, jlong max) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return NULL;
+    }
     SoftString regex(env, jregex);
     StringVector keys;
     if (db->match_regex(regex.str(), &keys, max) == -1) {
@@ -2025,6 +2127,9 @@ JNIEXPORT jobject JNICALL Java_kyotocabinet_DB_match_1similar
 (JNIEnv* env, jobject jself, jstring jorigin, jlong range, jboolean utf, jlong max) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return NULL;
+    }
     SoftString origin(env, jorigin);
     StringVector keys;
     if (db->match_similar(origin.str(), range, utf, &keys, max) == -1) {
@@ -2045,6 +2150,9 @@ JNIEXPORT jboolean JNICALL Java_kyotocabinet_DB_merge
 (JNIEnv* env, jobject jself, jobjectArray jsrcary, jint mode) {
   try {
     kc::PolyDB* db = getdbcore(env, jself);
+    if (!db) {
+        return false;
+    }
     size_t srcnum = env->GetArrayLength(jsrcary);
     if (srcnum < 1) return true;
     kc::BasicDB** srcary = new kc::BasicDB*[srcnum];
@@ -2114,7 +2222,13 @@ JNIEXPORT void JNICALL Java_kyotocabinet_DB_initialize
 JNIEXPORT void JNICALL Java_kyotocabinet_DB_destruct
 (JNIEnv* env, jobject jself) {
   try {
-    kc::PolyDB* db = getdbcore(env, jself);
+    //kc::PolyDB* db = getdbcore(env, jself);
+    
+    jclass cls_db = env->GetObjectClass(jself);
+    jfieldID id_db_ptr = env->GetFieldID(cls_db, "ptr_", "J");
+    
+    kc::PolyDB* db = (kc::PolyDB*)(intptr_t)env->GetLongField(jself, id_db_ptr);
+    env->SetLongField(jself, id_db_ptr, (intptr_t)0);
     delete db;
   } catch (std::exception& e) {}
 }
