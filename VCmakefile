@@ -38,11 +38,17 @@ CLFLAGS = /nologo \
 LINKFLAGS = /nologo \
   /libpath:"$(VCPATH)\lib" /libpath:"$(VCPATH)\PlatformSDK\Lib" /libpath:"$(SDKPATH)\Lib" \
   /libpath:"$(KCPATH)\lib" /libpath:"$(JDKPATH)\lib" /libpath:"." \
-  /libpath:"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\amd64" \
-  /libpath:"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\x64" \
   /libpath:"../kyotocabinet-github"
 
-
+!IF "$(PROCESSOR_ARCHITECTURE)" == "x86"
+LINKFLAGS = $(LINKFLAGS) \
+    /libpath:"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib" \
+    /libpath:"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib"
+!ELSE
+LINKFLAGS = $(LINKFLAGS) \
+    /libpath:"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\amd64" \
+    /libpath:"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\x64"
+!ENDIF
 
 #================================================================
 # Suffix rules

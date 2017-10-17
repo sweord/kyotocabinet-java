@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.3.1, 2017-09-22T15:00:17. -->
+<!-- Written by QtCreator 4.3.1, 2017-10-17T14:55:26. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -71,7 +71,7 @@
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProcessStep.Arguments"></value>
-      <value type="QString" key="ProjectExplorer.ProcessStep.Command">E:/code/open/kyotocabinet/kyotocabinet-java-github/vs2010-build.cmd</value>
+      <value type="QString" key="ProjectExplorer.ProcessStep.Command">E:/code/open/kyotocabinet/kyotocabinet-java-github/vs2010-build-32.cmd</value>
       <value type="QString" key="ProjectExplorer.ProcessStep.WorkingDirectory">%{buildDir}</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Custom Process Step</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
@@ -86,7 +86,7 @@
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProcessStep.Arguments"></value>
-      <value type="QString" key="ProjectExplorer.ProcessStep.Command">E:/code/open/kyotocabinet/kyotocabinet-java-github/vs2010-clean.cmd</value>
+      <value type="QString" key="ProjectExplorer.ProcessStep.Command">E:/code/open/kyotocabinet/kyotocabinet-java-github/vs2010-clean-32.cmd</value>
       <value type="QString" key="ProjectExplorer.ProcessStep.WorkingDirectory">%{buildDir}</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Custom Process Step</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
